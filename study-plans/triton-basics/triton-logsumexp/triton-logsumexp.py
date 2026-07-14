@@ -23,5 +23,9 @@ def solve(x: torch.Tensor, out: torch.Tensor) -> None:
     BLOCK_SIZE = triton.next_power_of_2(N)
     grid = (M,)
     logsumexp_kernel[grid](
-        x, out, x.stride(0), N, BLOCK_SIZE=BLOCK_SIZE,
+        x_ptr=x,
+        out_ptr=out,
+        x_row_stride=x.stride(0),
+        n_cols=N,
+        BLOCK_SIZE=BLOCK_SIZE,
     )
